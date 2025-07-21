@@ -104,7 +104,7 @@ export function CameraMotionSelect({ value, onChange }: CameraMotionSelectProps)
             <div className="flex-1 max-h-96 overflow-y-auto">
               {searchTerm ? (
                 <div className="p-2">
-                  <div className="text-xs font-semibold text-slate-600 mb-2 px-2">
+                  <div className="text-xs font-semibold text-slate-300 mb-2 px-2">
                     Search Results ({filteredCameraMotions.length})
                   </div>
                   {filteredCameraMotions.length > 0 ? (
@@ -113,14 +113,14 @@ export function CameraMotionSelect({ value, onChange }: CameraMotionSelectProps)
                         key={motion.value}
                         type="button"
                         onClick={() => handleSelect(motion.value)}
-                        className={`w-full text-left p-2 rounded hover:bg-slate-100 ${
-                          value === motion.value ? 'bg-blue-50 border-l-2 border-blue-500' : ''
+                        className={`w-full text-left p-2 rounded hover:bg-slate-700 transition-colors duration-200 ${
+                          value === motion.value ? 'bg-purple-600/20 border-l-2 border-purple-500' : ''
                         }`}
                       >
-                        <div className="font-medium text-slate-900 text-sm">
+                        <div className="font-medium text-white text-sm">
                           {motion.label}
                         </div>
-                        <div className="text-xs text-slate-600 mt-1">
+                        <div className="text-xs text-slate-300 mt-1">
                           {motion.description}
                         </div>
                         <div className="text-xs text-slate-400 mt-1">
@@ -136,7 +136,7 @@ export function CameraMotionSelect({ value, onChange }: CameraMotionSelectProps)
                 </div>
               ) : selectedCategory ? (
                 <div className="p-2">
-                  <div className="text-xs font-semibold text-slate-600 mb-2 px-2">
+                  <div className="text-xs font-semibold text-slate-300 mb-2 px-2">
                     {CAMERA_MOTION_CATEGORY_DISPLAY_NAMES[selectedCategory] || selectedCategory}
                   </div>
                   {CAMERA_MOTIONS_BY_CATEGORY[selectedCategory].map((motion) => (
@@ -144,14 +144,14 @@ export function CameraMotionSelect({ value, onChange }: CameraMotionSelectProps)
                       key={motion.value}
                       type="button"
                       onClick={() => handleSelect(motion.value)}
-                      className={`w-full text-left p-2 rounded hover:bg-slate-100 ${
-                        value === motion.value ? 'bg-blue-50 border-l-2 border-blue-500' : ''
+                      className={`w-full text-left p-2 rounded hover:bg-slate-700 transition-colors duration-200 ${
+                        value === motion.value ? 'bg-purple-600/20 border-l-2 border-purple-500' : ''
                       }`}
                     >
-                      <div className="font-medium text-slate-900 text-sm">
+                      <div className="font-medium text-white text-sm">
                         {motion.label}
                       </div>
-                      <div className="text-xs text-slate-600 mt-1">
+                      <div className="text-xs text-slate-300 mt-1">
                         {motion.description}
                       </div>
                     </button>
