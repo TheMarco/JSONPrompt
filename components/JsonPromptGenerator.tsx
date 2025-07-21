@@ -31,7 +31,7 @@ const initialData: PromptData = {
     }]
   },
   scene: {
-    location: 'neutral studio backdrop',
+    location: '',
     time_of_day: 'controlled lighting',
     environment_details: ''
   },
@@ -145,7 +145,7 @@ export function JsonPromptGenerator() {
                 type="text"
                 value={data.scene.location || ''}
                 onChange={(e) => updateData('scene', { location: e.target.value })}
-                placeholder="Describe the setting..."
+                placeholder="example: a scary forest"
                 className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:bg-slate-600/50 transition-all duration-200 hover:border-slate-500"
               />
             </div>
@@ -160,7 +160,12 @@ export function JsonPromptGenerator() {
                 { value: 'blue hour', label: 'Blue Hour' },
                 { value: 'midday sun', label: 'Midday Sun' },
                 { value: 'overcast', label: 'Overcast' },
-                { value: 'indoor artificial', label: 'Indoor Artificial' }
+                { value: 'indoor artificial', label: 'Indoor Artificial' },
+                { value: 'night', label: 'Night' },
+                { value: 'late night', label: 'Late Night' },
+                { value: 'midnight', label: 'Midnight' },
+                { value: 'dawn', label: 'Dawn' },
+                { value: 'dusk', label: 'Dusk' }
               ]}
               placeholder="Select time of day..."
             />
