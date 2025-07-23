@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { exportAsJSON, exportAsXML, exportAsMarkdown, downloadFile, getExportFilename, type ExportFormat } from '@/lib/exportUtils'
+import { exportAsJSON, exportAsXML, exportAsMarkdown, exportAsYAML, downloadFile, getExportFilename, type ExportFormat } from '@/lib/exportUtils'
 import { dbManager } from '@/lib/indexedDB'
 import type { PromptData } from '@/types/prompt'
 
@@ -107,6 +107,10 @@ export default function PromptControls({
           content = exportAsMarkdown(data)
           mimeType = 'text/markdown'
           break
+        case 'yaml':
+          content = exportAsYAML(data)
+          mimeType = 'application/x-yaml'
+          break
         default:
           throw new Error(`Unsupported format: ${format}`)
       }
@@ -127,7 +131,7 @@ export default function PromptControls({
         <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-purple-200 to-slate-300 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-pink-200 transition-all duration-300">Prompt Management</h3>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="space-y-6">
         {/* Title Input */}
         <div>
           <label className="block text-sm font-medium text-slate-300 mb-2">
@@ -142,8 +146,8 @@ export default function PromptControls({
           />
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-end gap-3">
+        {/* Load and Save Buttons */}
+        <div className="flex gap-3">
           {/* Load Button with Dropdown */}
           <div className="relative">
             <button
@@ -224,45 +228,51 @@ export default function PromptControls({
             )}
             Save
           </button>
+        </div>
 
-          {/* Export Button */}
-          <div className="relative">
-            <button
-              onClick={() => setIsExportOpen(!isExportOpen)}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 border border-white/10"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Export
-            </button>
+        {/* Export Button - Full Width */}
+        <div className="relative">
+          <button
+            onClick={() => setIsExportOpen(!isExportOpen)}
+            className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/25 border border-white/10"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Export Prompt
+          </button>
 
-            {/* Export Dropdown */}
-            {isExportOpen && (
-              <div className="absolute right-0 top-full mt-2 w-48 bg-slate-800/90 backdrop-blur-xl border border-slate-600/30 rounded-2xl shadow-2xl z-[110] animate-slideUp">
-                <div className="p-2">
-                  <button
-                    onClick={() => handleExport('json')}
-                    className="w-full text-left px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-xl transition-colors"
-                  >
-                    Export as JSON
-                  </button>
-                  <button
-                    onClick={() => handleExport('xml')}
-                    className="w-full text-left px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-xl transition-colors"
-                  >
-                    Export as XML
-                  </button>
-                  <button
-                    onClick={() => handleExport('markdown')}
-                    className="w-full text-left px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-xl transition-colors"
-                  >
-                    Export as Markdown
-                  </button>
-                </div>
+          {/* Export Dropdown */}
+          {isExportOpen && (
+            <div className="absolute left-0 top-full mt-2 w-full bg-slate-800/90 backdrop-blur-xl border border-slate-600/30 rounded-2xl shadow-2xl z-[110] animate-slideUp">
+              <div className="p-2">
+                <button
+                  onClick={() => handleExport('json')}
+                  className="w-full text-left px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-xl transition-colors"
+                >
+                  Export as JSON
+                </button>
+                <button
+                  onClick={() => handleExport('yaml')}
+                  className="w-full text-left px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-xl transition-colors"
+                >
+                  Export as YAML
+                </button>
+                <button
+                  onClick={() => handleExport('xml')}
+                  className="w-full text-left px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-xl transition-colors"
+                >
+                  Export as XML
+                </button>
+                <button
+                  onClick={() => handleExport('markdown')}
+                  className="w-full text-left px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-700/70 rounded-xl transition-colors"
+                >
+                  Export as Markdown
+                </button>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 import type { PromptData } from '@/types/prompt'
 
-export type ExportFormat = 'json' | 'xml' | 'markdown'
+export type ExportFormat = 'json' | 'xml' | 'markdown' | 'yaml'
 
 export function exportAsJSON(data: PromptData, title?: string): string {
   const exportData = {
@@ -115,6 +115,64 @@ export function exportAsMarkdown(data: PromptData, title?: string): string {
   return sections.join('\n')
 }
 
+export function exportAsYAML(data: PromptData, title?: string): string {
+  const formatYamlValue = (value: any, indent = 0): string => {
+    const spaces = '  '.repeat(indent)
+
+    if (value === null || value === undefined) {
+      return 'null'
+    }
+
+    if (typeof value === 'string') {
+      // Escape special YAML characters and wrap in quotes if needed
+      if (value.includes('\n') || value.includes('"') || value.includes("'") ||
+          value.includes(':') || value.includes('#') || value.includes('|') ||
+          value.trim() !== value || value === '') {
+        return `"${value.replace(/"/g, '\\"')}"`
+      }
+      return value
+    }
+
+    if (typeof value === 'boolean' || typeof value === 'number') {
+      return String(value)
+    }
+
+    if (Array.isArray(value)) {
+      if (value.length === 0) {
+        return '[]'
+      }
+      return '\n' + value.map(item =>
+        `${spaces}- ${formatYamlValue(item, indent + 1).replace(/^\s+/, '')}`
+      ).join('\n')
+    }
+
+    if (typeof value === 'object') {
+      const entries = Object.entries(value)
+      if (entries.length === 0) {
+        return '{}'
+      }
+      return '\n' + entries.map(([k, v]) => {
+        const formattedValue = formatYamlValue(v, indent + 1)
+        if (formattedValue.startsWith('\n')) {
+          return `${spaces}${k}:${formattedValue}`
+        } else {
+          return `${spaces}${k}: ${formattedValue}`
+        }
+      }).join('\n')
+    }
+
+    return String(value)
+  }
+
+  const yamlContent = [
+    `title: "${title || 'Untitled Prompt'}"`,
+    `exported_at: "${new Date().toISOString()}"`,
+    `data:${formatYamlValue(data, 1)}`
+  ].join('\n')
+
+  return yamlContent
+}
+
 export function downloadFile(content: string, filename: string, mimeType: string): void {
   const blob = new Blob([content], { type: mimeType })
   const url = URL.createObjectURL(blob)
@@ -130,5 +188,6 @@ export function downloadFile(content: string, filename: string, mimeType: string
 export function getExportFilename(title: string, format: ExportFormat): string {
   const sanitizedTitle = title.replace(/[^a-z0-9]/gi, '_').toLowerCase()
   const timestamp = new Date().toISOString().split('T')[0]
-  return `${sanitizedTitle}_${timestamp}.${format}`
+  const extension = format === 'yaml' ? 'yml' : format
+  return `${sanitizedTitle}_${timestamp}.${extension}`
 }
