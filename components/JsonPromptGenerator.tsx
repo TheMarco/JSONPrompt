@@ -24,6 +24,7 @@ const initialData: PromptData = {
     film_grain: 'light grain'
   },
   subject: {
+    no_characters: false,
     entities: [{
       role: 'main character',
       screen_side: 'center',
@@ -313,9 +314,37 @@ export function JsonPromptGenerator() {
         <div className="bg-gradient-to-br from-slate-800/40 via-slate-800/30 to-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-600/30 p-8 hover:shadow-purple-500/20 hover:border-purple-500/30 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full group-hover:scale-110 transition-transform duration-300"></div>
-            <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-purple-200 to-slate-300 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-pink-200 transition-all duration-300">Subject</h3>
+            <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-purple-200 to-slate-300 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-pink-200 transition-all duration-300">Subject(s)</h3>
           </div>
-          <div className="space-y-6">
+
+          {/* No Characters Toggle */}
+          <div className="mb-6">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={data.subject.no_characters}
+                onChange={(e) => {
+                  const no_characters = e.target.checked
+                  updateData('subject', {
+                    no_characters,
+                    entities: no_characters ? [] : [{
+                      role: 'main character',
+                      screen_side: 'center',
+                      appearance: '',
+                      movement: 'natural standing pose'
+                    }]
+                  })
+                }}
+                className="w-4 h-4 text-purple-600 bg-slate-700 border-slate-600 rounded focus:ring-purple-500 focus:ring-2"
+              />
+              <span className="text-sm font-medium text-slate-300">No characters in this scene</span>
+            </label>
+            <p className="text-xs text-slate-400 mt-1 ml-7">
+              Enable this to create a scene without any characters or subjects
+            </p>
+          </div>
+
+          <div className={`space-y-6 transition-opacity duration-300 ${data.subject.no_characters ? 'opacity-50 pointer-events-none' : ''}`}>
             {data.subject.entities.map((entity, index) => (
               <div key={index} className="border border-slate-600 rounded-xl p-4 space-y-4">
                 <div className="flex justify-between items-center">

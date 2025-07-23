@@ -9,8 +9,11 @@ export function generatePromptJson(data: PromptData): string {
       depth_of_field: data.shot.depth_of_field,
       film_grain: data.shot.film_grain
     },
-    subject: {
-      entities: data.subject.entities.filter(entity => 
+    subject: data.subject.no_characters ? {
+      no_characters: true,
+      entities: []
+    } : {
+      entities: data.subject.entities.filter(entity =>
         entity.role || entity.appearance || entity.movement
       )
     },

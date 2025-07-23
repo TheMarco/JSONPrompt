@@ -14,6 +14,7 @@ export interface PromptData {
     film_grain: string
   }
   subject: {
+    no_characters: boolean
     entities: Entity[]
   }
   scene: {

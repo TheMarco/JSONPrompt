@@ -89,12 +89,14 @@ export function exportAsMarkdown(data: PromptData, title?: string): string {
     `**Style:** ${data.cinematography.style}`,
     `**Tone:** ${data.cinematography.tone}`,
     '',
-    '## Subject',
-    data.subject.entities.length > 0 
-      ? data.subject.entities.map((entity, index) => 
-          `### Entity ${index + 1}\n${formatValue(entity)}`
-        ).join('\n\n')
-      : '_No entities specified_',
+    '## Subject(s)',
+    data.subject.no_characters
+      ? '_No characters in this scene_'
+      : data.subject.entities.length > 0
+        ? data.subject.entities.map((entity, index) =>
+            `### Entity ${index + 1}\n${formatValue(entity)}`
+          ).join('\n\n')
+        : '_No entities specified_',
     '',
     '## Audio',
     `**Ambience:** ${data.audio.ambience}`,
