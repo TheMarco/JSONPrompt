@@ -26,10 +26,10 @@ export function FormSection({ title, data, onUpdate, fields }: FormSectionProps)
   }
 
   return (
-    <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 p-8 hover:shadow-purple-500/10 transition-all duration-300">
+    <div className="bg-gradient-to-br from-slate-800/40 via-slate-800/30 to-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-600/30 p-8 hover:shadow-purple-500/20 hover:border-purple-500/30 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
-        <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">{title}</h3>
+        <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full group-hover:scale-110 transition-transform duration-300"></div>
+        <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-purple-200 to-slate-300 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-pink-200 transition-all duration-300">{title}</h3>
       </div>
       <div className="space-y-6">
         {fields.map((field) => (
@@ -55,7 +55,7 @@ export function FormSection({ title, data, onUpdate, fields }: FormSectionProps)
                 value={data[field.key] || ''}
                 onChange={(e) => handleChange(field.key, e.target.value)}
                 placeholder={field.placeholder}
-                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:bg-slate-600/50 transition-all duration-200 hover:border-slate-500"
+                className="w-full px-4 py-3 bg-slate-700/30 backdrop-blur-sm border border-slate-600/50 rounded-2xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 focus:bg-slate-600/40 transition-all duration-300 hover:border-slate-500/70 hover:bg-slate-600/30 shadow-inner"
               />
             )}
             {field.type === 'textarea' && (
@@ -64,7 +64,7 @@ export function FormSection({ title, data, onUpdate, fields }: FormSectionProps)
                 onChange={(e) => handleChange(field.key, e.target.value)}
                 placeholder={field.placeholder}
                 rows={3}
-                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:bg-slate-600/50 resize-none transition-all duration-200 hover:border-slate-500"
+                className="w-full px-4 py-3 bg-slate-700/30 backdrop-blur-sm border border-slate-600/50 rounded-2xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 focus:bg-slate-600/40 resize-y transition-all duration-300 hover:border-slate-500/70 hover:bg-slate-600/30 shadow-inner"
               />
             )}
             {field.type === 'range' && (

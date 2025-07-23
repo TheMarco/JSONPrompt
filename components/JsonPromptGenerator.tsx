@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Header } from './Header'
+import Header from './Header'
+import PromptControls from './PromptControls'
 import { FormSection } from './FormSection'
 import { CompositionSelect } from './CompositionSelect'
 import { CameraMotionSelect } from './CameraMotionSelect'
@@ -97,17 +98,37 @@ export function JsonPromptGenerator() {
   }
 
   return (
-    <div className="min-h-screen">
-      <Header
-        title={title}
-        onTitleChange={setTitle}
-        data={data}
-        currentPromptId={currentPromptId}
-        onPromptSaved={handlePromptSaved}
-        onPromptLoaded={handlePromptLoaded}
-      />
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <div className="absolute top-20 left-20 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl animate-bounce delay-300"></div>
+        <div className="absolute bottom-20 right-20 w-40 h-40 bg-violet-500/15 rounded-full blur-2xl animate-bounce delay-700"></div>
+
+        {/* Floating particles */}
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-purple-400/30 rounded-full animate-float"></div>
+        <div className="absolute top-3/4 right-1/4 w-3 h-3 bg-pink-400/20 rounded-full animate-float delay-1000"></div>
+        <div className="absolute top-1/2 left-3/4 w-1 h-1 bg-blue-400/40 rounded-full animate-float delay-2000"></div>
+        <div className="absolute bottom-1/4 left-1/2 w-2 h-2 bg-violet-400/25 rounded-full animate-float delay-1500"></div>
+        <div className="absolute top-1/3 right-1/3 w-1.5 h-1.5 bg-cyan-400/35 rounded-full animate-float delay-500"></div>
+      </div>
+
+      <div className="relative z-10">
+      <Header />
 
       <div className="container mx-auto px-6 py-8 pb-[500px]">
+        {/* Prompt Controls */}
+        <PromptControls
+          title={title}
+          onTitleChange={setTitle}
+          data={data}
+          currentPromptId={currentPromptId}
+          onPromptSaved={handlePromptSaved}
+          onPromptLoaded={handlePromptLoaded}
+        />
+
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Left Column */}
           <div className="space-y-8">
@@ -129,10 +150,10 @@ export function JsonPromptGenerator() {
 
         {/* Scene Configuration */}
         <div className="relative z-[90]">
-        <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 p-8 hover:shadow-purple-500/10 transition-all duration-300">
+        <div className="bg-gradient-to-br from-slate-800/40 via-slate-800/30 to-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-600/30 p-8 hover:shadow-purple-500/20 hover:border-purple-500/30 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
-            <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Scene</h3>
+            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full group-hover:scale-110 transition-transform duration-300"></div>
+            <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-purple-200 to-slate-300 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-pink-200 transition-all duration-300">Scene</h3>
           </div>
           <div className="space-y-6">
             {/* Location */}
@@ -146,7 +167,7 @@ export function JsonPromptGenerator() {
                 value={data.scene.location || ''}
                 onChange={(e) => updateData('scene', { location: e.target.value })}
                 placeholder="example: a scary forest"
-                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:bg-slate-600/50 transition-all duration-200 hover:border-slate-500"
+                className="w-full px-4 py-3 bg-slate-700/30 backdrop-blur-sm border border-slate-600/50 rounded-2xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 focus:bg-slate-600/40 transition-all duration-300 hover:border-slate-500/70 hover:bg-slate-600/30 shadow-inner"
               />
             </div>
 
@@ -181,7 +202,7 @@ export function JsonPromptGenerator() {
                 onChange={(e) => updateData('scene', { environment_details: e.target.value })}
                 placeholder="Additional environmental details..."
                 rows={3}
-                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:bg-slate-600/50 resize-y transition-all duration-200 hover:border-slate-500"
+                className="w-full px-4 py-3 bg-slate-700/30 backdrop-blur-sm border border-slate-600/50 rounded-2xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 focus:bg-slate-600/40 resize-y transition-all duration-300 hover:border-slate-500/70 hover:bg-slate-600/30 shadow-inner"
               />
             </div>
           </div>
@@ -190,10 +211,10 @@ export function JsonPromptGenerator() {
 
         {/* Shot Configuration with Custom Composition Select */}
         <div className="relative z-[85]">
-        <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 p-8 hover:shadow-purple-500/10 transition-all duration-300">
+        <div className="bg-gradient-to-br from-slate-800/40 via-slate-800/30 to-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-600/30 p-8 hover:shadow-purple-500/20 hover:border-purple-500/30 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
-            <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Shot Configuration</h3>
+            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full group-hover:scale-110 transition-transform duration-300"></div>
+            <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-purple-200 to-slate-300 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-pink-200 transition-all duration-300">Shot Configuration</h3>
           </div>
           <div className="space-y-6">
             <CompositionSelect
@@ -244,10 +265,10 @@ export function JsonPromptGenerator() {
 
         {/* Cinematography with Custom Lighting Select */}
         <div className="relative z-[80]">
-        <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 p-8 hover:shadow-purple-500/10 transition-all duration-300">
+        <div className="bg-gradient-to-br from-slate-800/40 via-slate-800/30 to-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-600/30 p-8 hover:shadow-purple-500/20 hover:border-purple-500/30 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
-            <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Cinematography</h3>
+            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full group-hover:scale-110 transition-transform duration-300"></div>
+            <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-purple-200 to-slate-300 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-pink-200 transition-all duration-300">Cinematography</h3>
           </div>
           <div className="space-y-6">
             <LightingSelect
@@ -289,10 +310,10 @@ export function JsonPromptGenerator() {
           <div className="space-y-8">
         {/* Subject Configuration */}
         <div className="relative z-[70]">
-        <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 p-8 hover:shadow-purple-500/10 transition-all duration-300">
+        <div className="bg-gradient-to-br from-slate-800/40 via-slate-800/30 to-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-600/30 p-8 hover:shadow-purple-500/20 hover:border-purple-500/30 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
-            <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Subject</h3>
+            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full group-hover:scale-110 transition-transform duration-300"></div>
+            <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-purple-200 to-slate-300 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-pink-200 transition-all duration-300">Subject</h3>
           </div>
           <div className="space-y-6">
             {data.subject.entities.map((entity, index) => (
@@ -359,7 +380,7 @@ export function JsonPromptGenerator() {
                     }}
                     placeholder="Describe the character's appearance..."
                     rows={2}
-                    className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-y text-sm"
+                    className="w-full px-3 py-2 bg-slate-700/30 backdrop-blur-sm border border-slate-600/50 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 resize-y text-sm transition-all duration-300 hover:border-slate-500/70 shadow-inner"
                   />
                 </div>
 
@@ -395,10 +416,10 @@ export function JsonPromptGenerator() {
 
         {/* Audio Configuration */}
         <div className="relative z-[50]">
-        <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 p-8 hover:shadow-purple-500/10 transition-all duration-300">
+        <div className="bg-gradient-to-br from-slate-800/40 via-slate-800/30 to-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-600/30 p-8 hover:shadow-purple-500/20 hover:border-purple-500/30 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
-            <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Audio</h3>
+            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full group-hover:scale-110 transition-transform duration-300"></div>
+            <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-purple-200 to-slate-300 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-pink-200 transition-all duration-300">Audio</h3>
           </div>
           <div className="space-y-6">
             <CustomSelect
@@ -480,10 +501,10 @@ export function JsonPromptGenerator() {
 
         {/* Dialogue Configuration */}
         <div className="relative z-[40]">
-        <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 p-8 hover:shadow-purple-500/10 transition-all duration-300">
+        <div className="bg-gradient-to-br from-slate-800/40 via-slate-800/30 to-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-600/30 p-8 hover:shadow-purple-500/20 hover:border-purple-500/30 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
-            <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Dialogue</h3>
+            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full group-hover:scale-110 transition-transform duration-300"></div>
+            <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-purple-200 to-slate-300 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-pink-200 transition-all duration-300">Dialogue</h3>
           </div>
           <div className="space-y-6">
             <div>
@@ -503,7 +524,7 @@ export function JsonPromptGenerator() {
                       }}
                       placeholder="Enter dialogue line..."
                       rows={2}
-                      className="flex-1 px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-y text-sm"
+                      className="flex-1 px-3 py-2 bg-slate-700/30 backdrop-blur-sm border border-slate-600/50 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 resize-y text-sm transition-all duration-300 hover:border-slate-500/70 shadow-inner"
                     />
                     <button
                       onClick={() => {
@@ -545,10 +566,10 @@ export function JsonPromptGenerator() {
 
         {/* Color Palette Configuration */}
         <div className="relative z-[30]">
-        <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 p-8 hover:shadow-purple-500/10 transition-all duration-300">
+        <div className="bg-gradient-to-br from-slate-800/40 via-slate-800/30 to-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-600/30 p-8 hover:shadow-purple-500/20 hover:border-purple-500/30 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
-            <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Color Palette</h3>
+            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full group-hover:scale-110 transition-transform duration-300"></div>
+            <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-purple-200 to-slate-300 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-pink-200 transition-all duration-300">Color Palette</h3>
           </div>
           <div>
             <label className="flex items-center gap-2 text-sm font-medium text-slate-300 mb-3">
@@ -560,7 +581,7 @@ export function JsonPromptGenerator() {
               onChange={(e) => updateData('color_palette', { description: e.target.value })}
               placeholder="Describe the color palette (e.g., warm earth tones, cool blues and grays, vibrant neon colors)..."
               rows={3}
-              className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent focus:bg-slate-600/50 resize-y transition-all duration-200 hover:border-slate-500"
+              className="w-full px-4 py-3 bg-slate-700/30 backdrop-blur-sm border border-slate-600/50 rounded-2xl text-white placeholder-slate-400 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 focus:bg-slate-600/40 resize-y transition-all duration-300 hover:border-slate-500/70 hover:bg-slate-600/30 shadow-inner"
             />
           </div>
         </div>
@@ -568,10 +589,10 @@ export function JsonPromptGenerator() {
 
         {/* Visual Rules Configuration */}
         <div className="relative z-[20]">
-        <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 p-8 hover:shadow-purple-500/10 transition-all duration-300">
+        <div className="bg-gradient-to-br from-slate-800/40 via-slate-800/30 to-slate-900/50 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-600/30 p-8 hover:shadow-purple-500/20 hover:border-purple-500/30 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1 group">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
-            <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Visual Rules</h3>
+            <div className="w-2 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full group-hover:scale-110 transition-transform duration-300"></div>
+            <h3 className="text-xl font-semibold bg-gradient-to-r from-white via-purple-200 to-slate-300 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-pink-200 transition-all duration-300">Visual Rules</h3>
           </div>
           <div>
             <label className="flex items-center gap-2 text-sm font-medium text-slate-300 mb-3">
@@ -620,25 +641,37 @@ export function JsonPromptGenerator() {
         </div>
 
         {/* Generate Button - Centered across both columns */}
-        <div className="lg:col-span-2 flex justify-center pt-8">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-75"></div>
+        <div className="lg:col-span-2 flex justify-center pt-12">
+          <div className="relative group">
+            {/* Animated background glow */}
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-violet-600 rounded-3xl blur-xl opacity-75 group-hover:opacity-100 animate-pulse"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-violet-600 rounded-3xl blur-2xl opacity-50 group-hover:opacity-75 animate-pulse delay-75"></div>
+
+            {/* Sparkle effects */}
+            <div className="absolute -top-2 -left-2 w-1 h-1 bg-white rounded-full animate-sparkle"></div>
+            <div className="absolute -top-1 right-8 w-0.5 h-0.5 bg-purple-300 rounded-full animate-sparkle delay-300"></div>
+            <div className="absolute -bottom-1 -right-1 w-1.5 h-1.5 bg-pink-300 rounded-full animate-sparkle delay-700"></div>
+            <div className="absolute bottom-2 left-4 w-0.5 h-0.5 bg-violet-300 rounded-full animate-sparkle delay-1000"></div>
+
             <button
               onClick={generateJson}
-              className="relative bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-10 py-5 rounded-2xl font-bold text-lg transition-all duration-300 shadow-2xl hover:shadow-purple-500/25 transform hover:scale-105 hover:-translate-y-1"
+              className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-violet-600 hover:from-purple-700 hover:via-pink-700 hover:to-violet-700 text-white px-12 py-6 rounded-3xl font-bold text-xl transition-all duration-500 shadow-2xl hover:shadow-purple-500/50 transform hover:scale-110 hover:-translate-y-2 border border-white/20 backdrop-blur-sm"
             >
-              <span className="flex items-center gap-3">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <span className="flex items-center gap-4">
+                <svg className="w-7 h-7 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                 </svg>
-                Generate JSON Prompt
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span className="bg-gradient-to-r from-white to-purple-100 bg-clip-text text-transparent">
+                  Generate JSON Prompt
+                </span>
+                <svg className="w-6 h-6 group-hover:-rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </span>
             </button>
           </div>
         </div>
+      </div>
       </div>
 
       {/* JSON Modal */}
