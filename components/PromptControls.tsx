@@ -69,10 +69,10 @@ export default function PromptControls({
     try {
       let id: string
       if (currentPromptId) {
-        await dbManager.updatePrompt(currentPromptId, title, data)
+        await dbManager.updatePrompt(currentPromptId, { title, data })
         id = currentPromptId
       } else {
-        id = await dbManager.savePrompt(title, data)
+        id = await dbManager.savePrompt({ title, data })
       }
       
       onPromptSaved(id)
