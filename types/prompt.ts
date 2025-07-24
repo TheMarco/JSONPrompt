@@ -45,4 +45,7 @@ export interface PromptData {
   visual_rules: {
     prohibited_elements: string[]
   }
+  additional_properties: {
+    [key: string]: string
+  }
 }

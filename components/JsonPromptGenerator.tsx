@@ -11,6 +11,7 @@ import { LightingSelect } from './LightingSelect'
 import { CinematographyStyleSelect } from './CinematographyStyleSelect'
 import { CustomSelect } from './CustomSelect'
 import { JsonModal } from './JsonModal'
+import { AdditionalPropertiesSection } from './AdditionalPropertiesSection'
 import { generatePromptJson } from '@/lib/promptGenerator'
 import { dbManager } from '@/lib/indexedDB'
 import type { PromptData } from '@/types/prompt'
@@ -20,7 +21,7 @@ const initialData: PromptData = {
     composition: 'medium-shot',
     camera_motion: 'locked-off',
     lens: 'standard-lens-50mm',
-    depth_of_field: 'shallow',
+    depth_of_field: 'medium',
     film_grain: 'light grain'
   },
   subject: {
@@ -46,7 +47,7 @@ const initialData: PromptData = {
     tone: 'uplifting'
   },
   audio: {
-    ambience: 'room tone',
+    ambience: 'silence',
     sound_design: [],
     music: 'none'
   },
@@ -58,8 +59,9 @@ const initialData: PromptData = {
     description: 'natural colors'
   },
   visual_rules: {
-    prohibited_elements: ['camera shake', 'on-screen text', 'brand logos', 'minors or nudity']
-  }
+    prohibited_elements: ['camera shake', 'on-screen text', 'brand logos']
+  },
+  additional_properties: {}
 }
 
 export function JsonPromptGenerator() {
@@ -665,6 +667,12 @@ export function JsonPromptGenerator() {
           </div>
         </div>
         </div>
+
+        {/* Additional Properties Section */}
+        <AdditionalPropertiesSection
+          data={data.additional_properties}
+          onUpdate={(updates) => updateData('additional_properties', updates)}
+        />
 
           </div>
         </div>

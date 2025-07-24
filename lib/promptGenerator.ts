@@ -44,7 +44,8 @@ export function generatePromptJson(data: PromptData): string {
     },
     visual_rules: {
       prohibited_elements: data.visual_rules.prohibited_elements
-    }
+    },
+    additional_properties: data.additional_properties
   }
 
   return JSON.stringify(output, null, 2)
