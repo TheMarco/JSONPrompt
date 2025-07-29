@@ -1,4 +1,38 @@
-import type { PromptData } from '@/types/prompt'
+import type { PromptData, Entity } from '@/types/prompt'
+
+// Utility function to check if a value is considered "empty"
+function isEmpty(value: any): boolean {
+  if (value === null || value === undefined) return true
+  if (typeof value === 'string') return value.trim() === ''
+  if (Array.isArray(value)) return value.length === 0
+  if (typeof value === 'object') return Object.keys(value).length === 0
+  return false
+}
+
+// Utility function to recursively filter out empty fields
+function filterEmptyFields(obj: any): any {
+  if (Array.isArray(obj)) {
+    const filtered = obj.filter(item => !isEmpty(item)).map(item => filterEmptyFields(item))
+    return filtered.length > 0 ? filtered : undefined
+  }
+
+  if (typeof obj === 'object' && obj !== null) {
+    const filtered: any = {}
+
+    for (const [key, value] of Object.entries(obj)) {
+      if (!isEmpty(value)) {
+        const filteredValue = filterEmptyFields(value)
+        if (filteredValue !== undefined) {
+          filtered[key] = filteredValue
+        }
+      }
+    }
+
+    return Object.keys(filtered).length > 0 ? filtered : undefined
+  }
+
+  return obj
+}
 
 export function generatePromptJson(data: PromptData): string {
   const output = {
@@ -48,5 +82,8 @@ export function generatePromptJson(data: PromptData): string {
     additional_properties: data.additional_properties
   }
 
-  return JSON.stringify(output, null, 2)
+  // Filter out empty fields from the output
+  const filteredOutput = filterEmptyFields(output)
+
+  return JSON.stringify(filteredOutput, null, 2)
 }
